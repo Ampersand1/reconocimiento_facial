@@ -35,4 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         messageParagraph.classList.add(type);
         document.body.appendChild(messageParagraph);
     }
+
+    
 });

@@ -7,20 +7,20 @@
 </head>
 <body>
     <h1>Agregar Nuevo Usuario</h1>
+    <form action="http://localhost:8000/agregar-usuario/" enctype="multipart/form-data" method="post">
     <form id="userForm" enctype="multipart/form-data">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
         <label for="files">Fotos:</label>
         <input type="file" id="files" name="files" multiple required>
     </form>
-    <form action="http://localhost:8000/agregar-usuario/" enctype="multipart/form-data" method="post">
-        <button type="button" id="btnAgregar">Agregar Usuario</button>
-    </form>
+    <button type="button" id="agregar">Agregar Usuario</button>
     <button type="button" id="btnDecirNombre">Decir nombre</button>
     <button type="button" id="btnSubirFoto">Subir foto</button>
     <button type="button" id="btnActivar" style="display:none;">Activar reconocimiento</button>
     <button type="button" id="btnDesactivar" style="display:none;">Desactivar reconocimiento</button>
     <button type="button" id="btnEliminar" style="display:none;">Eliminar usuario</button>
+    </form>
     <div id="response"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

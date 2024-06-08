@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activar Reconocimiento</title>
+    <title>Activar Cámara</title>
 </head>
 <body>
-    
+    <h1>Transmisión de la Cámara</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button type="button" id="btnActivarButton">Activar Cámara</button>
+    <button type="button" id="btnDetenerButton" disabled>Detener Transmisión</button>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/artyom.js@1.0.6/build/artyom.window.min.js"></script>
+    <script src="activarcomandos.js"></script>
+    <script src="activar.js"></script>
 </body>
 </html>

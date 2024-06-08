@@ -77,3 +77,46 @@ $("#btnEliminar").one('click', function () {
         window.location.href = 'eliminar.html';
     }, 1000)
 });
+
+$('#btnSubirFoto').mouseover(function () {
+    artyom.say("Subir foto");
+});
+$("#btnSubirFoto").one('click', function () {
+    artyom.say("Usted acaba de seleccionar subir foto");
+    // Acción correspondiente    
+});
+$('#btnsAgregar').mouseover(function () {
+    artyom.say("Agregar Usuario");
+});
+$("#btnAgregar").one('click', function () {
+    artyom.say("Usted acaba de seleccionar agregar usuario");
+    // Acción correspondiente
+}); 
+
+$('#btnDecirNombre').mouseover(function () {
+    artyom.say("Decir nombre");
+});
+$("#btnDecirNombre").one('click', function () {
+    artyom.say("Usted acaba de seleccionar decir nombre");
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'es-ES';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.start();
+
+        recognition.onresult = function(event) {
+            const nombre = event.results[0][0].transcript;
+            $('#nombre').val(nombre);
+            artyom.say(`Usted ha dicho ${nombre}`);
+        };
+
+        recognition.onspeechend = function() {
+            recognition.stop();
+        };
+
+        recognition.onerror = function(event) {
+            artyom.say('Hubo un error al reconocer el nombre, por favor intente de nuevo');
+            console.error('Error en el reconocimiento de voz: ', event.error);
+        };
+});

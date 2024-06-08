@@ -1,15 +1,14 @@
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from fastapi.staticfiles import StaticFiles
-import cv2
 import numpy as np
 import shutil
 import os
 
 app = FastAPI()
-app.mount("/", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Configuración de CORS
 origins = [
@@ -17,12 +16,10 @@ origins = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",  
 ]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
@@ -41,7 +38,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 async def agregar_usuario(nombre: str = Form(...), files: list[UploadFile] = File(...)):
     rutas_foto = []
     for file in files:
-        file_location = f"{UPLOAD_FOLDER}/{file.filename}"
+        file_location = os.path.join(UPLOAD_FOLDER, file.filename)
         with open(file_location, "wb+") as file_object:
             shutil.copyfileobj(file.file, file_object)
         rutas_foto.append(file_location)
@@ -50,7 +47,15 @@ async def agregar_usuario(nombre: str = Form(...), files: list[UploadFile] = Fil
     collection.insert_one(nuevo_usuario)
     return {"estado": "Usuario agregado exitosamente"}
 
-def comparar_histogramas(img1, img2):
+@app.delete("/eliminar-usuario/{nombre}")
+async def eliminar_usuario(nombre: str):
+    result = collection.delete_many({"nombre": nombre})
+    if result.deleted_count > 0:
+        return {"message": "Usuario eliminado correctamente"}
+    else:
+        return {"message": "No se encontró ningún usuario con ese nombre"}
+
+'''def comparar_histogramas(img1, img2):
     # Convertir las imágenes a escala de grises
     gray_img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
     gray_img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
@@ -70,7 +75,6 @@ def comparar_histogramas(img1, img2):
 
 @app.get("/comparar-imagenes/")
 async def comparar_imagenes():
-    
     # Capturar imagen de la cámara en tiempo real
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
@@ -93,7 +97,7 @@ async def comparar_imagenes():
     resultados = sorted(resultados, key=lambda x: x["score"], reverse=True)
 
     return {"resultados": resultados}
-
+'''
 @app.get("/obtener-fotos/")
 async def obtener_fotos():
     fotos = []
@@ -101,6 +105,7 @@ async def obtener_fotos():
         for foto_path in usuario["fotos"]:
             fotos.append({"usuario": usuario["nombre"], "foto_path": foto_path})
     return {"fotos": fotos}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)

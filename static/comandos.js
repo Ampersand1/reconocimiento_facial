@@ -12,6 +12,7 @@ artyom.initialize({
 $("#inicio").one('click', function () {
     artyom.say("Bienvenido a tu asistente de reconocimiento facial, despues de escuchar este mensaje da un clic en la pantalla y luego pasa el cursor de mouse por encima de la pantalla para saber las opciones de tu asistente.");
     setTimeout(function () {
+        console.log('hola');
         //un segundo despues, ir al menu
         window.location.href = 'menu.html'; 
            

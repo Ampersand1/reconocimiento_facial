@@ -1,13 +1,11 @@
 var artyom = new Artyom();
 
-
 artyom.initialize({
     lang: "es-ES", // Configura el idioma a español
     debug: true, // Habilita la depuración
     continuous: false, // No necesita estar en modo continuo para un solo saludo
     listen: false, // No es necesario escuchar para comandos
 });
-
 // Al oprimir el boton de la pantalla inicial, da la bienvenida y las instrucciones para el menu
 $("#inicio").one('click', function () {
     artyom.say("Bienvenido a tu asistente de reconocimiento facial, despues de escuchar este mensaje da un clic en la pantalla y luego pasa el cursor de mouse por encima de la pantalla para saber las opciones de tu asistente.");
@@ -18,6 +16,7 @@ $("#inicio").one('click', function () {
            
     }, 14000);
 });
+
 //al estar en el menu, sale el documento en blanco
 $("#mostrar").one('click', function () {
     console.log("DIO CLIC");
